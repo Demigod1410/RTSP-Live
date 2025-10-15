@@ -3,17 +3,15 @@ import { connectToDatabase } from '@/lib/db/mongodb';
 import OverlayModel from '@/lib/models/Overlay';
 import mongoose from 'mongoose';
 
-interface RouteParams {
-  params: {
-    id: string;
-  };
-}
-
 // GET a specific overlay by ID
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
     await connectToDatabase();
-
+    
+    const params = await context.params;
     const { id } = params;
 
     // Validate the ID format
@@ -35,7 +33,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json(overlay, { status: 200 });
   } catch (error) {
-    console.error(`GET /api/overlays/${params.id} error:`, error);
+    console.error(`GET /api/overlays/[id] error:`, error);
     return NextResponse.json(
       { message: 'Failed to fetch overlay', error: (error as Error).message },
       { status: 500 }
@@ -44,10 +42,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 }
 
 // PUT (update) a specific overlay by ID
-export async function PUT(request: NextRequest, { params }: RouteParams) {
+export async function PUT(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
     await connectToDatabase();
-
+    
+    const params = await context.params;
     const { id } = params;
     
     // Validate the ID format
@@ -86,7 +88,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json(updatedOverlay, { status: 200 });
   } catch (error) {
-    console.error(`PUT /api/overlays/${params.id} error:`, error);
+    console.error(`PUT /api/overlays/[id] error:`, error);
     return NextResponse.json(
       { message: 'Failed to update overlay', error: (error as Error).message },
       { status: 500 }
@@ -95,10 +97,14 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 }
 
 // DELETE a specific overlay by ID
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
+export async function DELETE(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
     await connectToDatabase();
-
+    
+    const params = await context.params;
     const { id } = params;
     
     // Validate the ID format
@@ -126,7 +132,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       { status: 200 }
     );
   } catch (error) {
-    console.error(`DELETE /api/overlays/${params.id} error:`, error);
+    console.error(`DELETE /api/overlays/[id] error:`, error);
     return NextResponse.json(
       { message: 'Failed to delete overlay', error: (error as Error).message },
       { status: 500 }

@@ -66,7 +66,7 @@ RTSP Live is a modern web application for viewing and customizing RTSP video str
    npm run dev
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. Open [rtsp-live](https://rtsp-live.vercel.app/) in your browser
 
 ## Usage
 
